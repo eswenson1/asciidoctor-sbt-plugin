@@ -1,0 +1,3 @@
+= Asciidoctor sbt plugin
+
+The future home of the plugin for sbt, the Scala build tool, that uses AsciidoctorJ to process AsciiDoc source files within the project.
