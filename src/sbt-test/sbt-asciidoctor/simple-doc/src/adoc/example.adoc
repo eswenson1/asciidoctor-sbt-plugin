@@ -1,0 +1,37 @@
+= Hello world
+:awestruct-layout: base
+ifdef::awestruct[]
+:toc:
+:toc-placement: preamble
+endif::awestruct[]
+ifndef::awestruct[]
+:toc: right
+:numbered:
+:icons: font
+:idprefix:
+:idseparator: -
+:sectanchors:
+:source-highlighter: pygments
+:pygments-style: tango
+endif::awestruct[]
+:experimental:
+:mdash: &#8212;
+:language: asciidoc
+
+= Hello world
+
+It is I, the `code example`!
+
+== First Section
+
+* item 1
+* item 2
+
+== Some code now
+Here's some code:
+
+```scala
+object Hello extends App {
+  def helloWorld: String = ""
+}
+```

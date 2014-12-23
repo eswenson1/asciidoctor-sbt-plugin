@@ -1,0 +1,9 @@
+= Second file
+
+== Second Hello world
+
+```scala
+def Hello = "HELLO WORLD"
+```
+
+Some more text here, amazing!
