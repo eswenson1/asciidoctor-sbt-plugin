@@ -118,7 +118,7 @@
         if (id === '') {
             parent.append('<li>' + text + '</li>');
         } else {
-            parent.append('<li><a href="#' + id + '" class="scroll">' + text + '</a></li>');
+            parent.append('<li><a href="#' + id + '" class="scroll" onclick="window.location.hash=\'' + id + '\'">' + text + '</a></li>');
         }
     };
 

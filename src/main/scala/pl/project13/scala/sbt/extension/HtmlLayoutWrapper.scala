@@ -9,6 +9,11 @@ import org.asciidoctor.extension.Postprocessor
 class HtmlLayoutWrapper(opts: java.util.HashMap[String, AnyRef]) extends Postprocessor(opts) {
 
   private val filename = Option(opts.get("html-layout.file")).getOrElse("src/adoc/layout.html").toString
+  private val bodyMarker = Option(opts.get("html-layout.body-marker")).getOrElse("""\{\{body\}\}""").toString
+  private val titleMarker = Option(opts.get("html-layout.title-marker")).getOrElse("""\{\{title\}\}""").toString
+
+  private val assetsRelPath = Option(opts.get("assets-rel-path")).getOrElse("assets/")
+  private val titleSuffix: List[String] = Option(opts.get("title-suffix")).map(_.toString :: Nil).getOrElse(Nil)
 
   lazy val file = new File(filename)
 
@@ -35,14 +40,12 @@ class HtmlLayoutWrapper(opts: java.util.HashMap[String, AnyRef]) extends Postpro
     }
   }
 
-  val bodyMarker = Option(opts.get("html-layout.body-marker")).getOrElse("{{body}}").toString
-  val titleMarker = Option(opts.get("html-layout.title-marker")).getOrElse("{{title}}").toString
-
   override def process(document: Document, input: String): String = if (document.basebackend("html")) {
+    val docTitle = Option(document.doctitle()).getOrElse("")
     template
-      .replace(bodyMarker, input)
-      .replace(titleMarker, Option(document.doctitle()).getOrElse("[no title]"))
-      .replaceAll("assets/", opts.get("assets-rel-path").toString) // this is a hack, because Processors are unaware which file they work on
+      .replaceAll(bodyMarker, input)
+      .replaceAll(titleMarker, (docTitle :: titleSuffix).mkString(" – "))
+      .replaceAll("assets/", assetsRelPath.toString) // this is a hack, because Processors are unaware which file they work on
   } else input
 
 }

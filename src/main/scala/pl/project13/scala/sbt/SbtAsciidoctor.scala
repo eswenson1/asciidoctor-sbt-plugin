@@ -4,6 +4,7 @@ import java.io.{BufferedReader, FileReader, FileWriter}
 import java.util
 
 import com.github.sommeri.less4j.utils.URIUtils
+import com.google.common.collect.Maps
 import org.asciidoctor.AsciiDocDirectoryWalker
 import org.asciidoctor.extension._
 import org.asciidoctor.internal.AsciidoctorModule
@@ -12,6 +13,7 @@ import sbt.Keys._
 import sbt._
 
 import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.collection.immutable
 
 object SbtAsciidoctor extends AutoPlugin {
@@ -30,7 +32,7 @@ object SbtAsciidoctor extends AutoPlugin {
     val stylesheet = settingKey[File]("stylesheet (e.g. main.css)")
     val adocDir = settingKey[File]("Asciidoctor source directory")
 
-    val options = settingKey[util.HashMap[String, AnyRef]]("Options for AsciiDoctor")
+    val options = settingKey[Map[String, AnyRef]]("Options for AsciiDoctor")
 
     val extensions = settingKey[immutable.Seq[Class[_ <: Processor]]]("Options for AsciiDoctor")
   }
@@ -48,13 +50,11 @@ object SbtAsciidoctor extends AutoPlugin {
     stylesDir in AsciiDoctor := (assetsDir in AsciiDoctor).value / "stylesheets",
     stylesheet in AsciiDoctor := (stylesDir in AsciiDoctor).value / "main.css",
 
-    options in AsciiDoctor := {
-      val opts = new util.HashMap[String, AnyRef]()
-      opts.put("assetsdir", (assetsDir in AsciiDoctor).value)
-      opts.put("stylesdir", (stylesDir in AsciiDoctor).value)
-      opts.put("stylesheet", (stylesheet in AsciiDoctor).value)
-      opts
-    },
+    options in AsciiDoctor := Map(
+      "assetsdir" -> (assetsDir in AsciiDoctor).value,
+      "stylesdir" -> (stylesDir in AsciiDoctor).value,
+      "stylesheet" -> (stylesheet in AsciiDoctor).value
+    ),
 
     extensions in AsciiDoctor := List(
       classOf[extension.HtmlLayoutWrapper]
@@ -62,7 +62,7 @@ object SbtAsciidoctor extends AutoPlugin {
 
     generate in AsciiDoctor := {
       val log = streams.value.log
-      val opts = (options in AsciiDoctor).value
+      val opts: util.HashMap[String, AnyRef] = Maps.newHashMap((options in AsciiDoctor).value.asJava) // asciidoctors API requires the HashMap explicitly
       val extns = (extensions in AsciiDoctor).value
 
       registerExtensions(opts, engine.javaExtensionRegistry, extns)
@@ -70,11 +70,11 @@ object SbtAsciidoctor extends AutoPlugin {
       val docsWalker = new AsciiDocDirectoryWalker((adocDir in AsciiDoctor).value.getAbsolutePath)
 
       val files = docsWalker.scan() map { adoc =>
-        log.info("adoc = " + adoc)
-
+        val target = new File(adoc.getAbsolutePath.replace(".adoc", ".html"))
+        log.info(s"Generating: $target ...")
         opts.put("assets-rel-path", URIUtils.relativize(adoc, (assetsDir in AsciiDoctor).value))
 
-        writeToFile(opts, adoc, new File(adoc + ".html"))
+        writeToFile(opts, adoc, target)
       }
       files.toSeq
     }

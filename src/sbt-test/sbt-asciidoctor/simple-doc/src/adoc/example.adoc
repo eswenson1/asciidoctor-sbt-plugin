@@ -1,19 +1,10 @@
 = Hello world
-:awestruct-layout: base
-ifdef::awestruct[]
-:toc:
-:toc-placement: preamble
-endif::awestruct[]
-ifndef::awestruct[]
-:toc: right
 :icons: font
 :idprefix:
 :idseparator: -
 :sectanchors:
 :sectlinks:
 :source-highlighter: pygments
-:pygments-style: tango
-endif::awestruct[]
 :experimental:
 :mdash: &#8212;
 :language: asciidoc
@@ -29,11 +20,40 @@ It is I, the `code example`!
 
 This is dash - hello. And this is mdash–hello!
 
+See also <<index.adoc#this-is-another-example-section>> on more examples!
+
 == Some code now
 Here's some code:
 
 ```scala
-object Hello extends App {
-  def helloWorld: String = ""
+object Hello extends App {        // <1>
+  def helloWorld: String = ""     // <2>
+
+  println("hello" + helloWorld)   // <3>
 }
 ```
+<1> Here we extend the App class
+<2> Now we defined a method, very complex as you can see
+<3> We can also print things
+
+
+== Section Level 1
+
+=== Section Level 2
+
+==== Section Level 3
+
+===== Section Level 4
+
+====== Section Level 5
+
+. level 1
+. level 1
+. level 1
+. level 1
+.. level 2
+.. level 2
+.. level 2
+.. level 2
+. level 1
+
