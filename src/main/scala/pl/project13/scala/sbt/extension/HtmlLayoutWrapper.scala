@@ -42,7 +42,7 @@ class HtmlLayoutWrapper(opts: java.util.HashMap[String, AnyRef]) extends Postpro
     template
       .replace(bodyMarker, input)
       .replace(titleMarker, Option(document.doctitle()).getOrElse("[no title]"))
-      .replaceAll("assets/", opts.get("assets-rel-path").toString)
+      .replaceAll("assets/", opts.get("assets-rel-path").toString) // this is a hack, because Processors are unaware which file they work on
   } else input
 
 }

@@ -6,11 +6,11 @@ ifdef::awestruct[]
 endif::awestruct[]
 ifndef::awestruct[]
 :toc: right
-:numbered:
 :icons: font
 :idprefix:
 :idseparator: -
 :sectanchors:
+:sectlinks:
 :source-highlighter: pygments
 :pygments-style: tango
 endif::awestruct[]
@@ -26,6 +26,8 @@ It is I, the `code example`!
 
 * item 1
 * item 2
+
+This is dash - hello. And this is mdash–hello!
 
 == Some code now
 Here's some code:
