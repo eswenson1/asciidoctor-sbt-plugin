@@ -1,6 +1,6 @@
 = Quickstart
 
-== Hello world
+== Hello {docdir}
 
 ```scala
 def Hello = "HELLO WORLD"
