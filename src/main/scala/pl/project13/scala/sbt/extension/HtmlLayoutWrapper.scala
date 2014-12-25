@@ -1,5 +1,6 @@
 package pl.project13.scala.sbt.extension
 
+import java.util
 import java.io.File
 import java.util.concurrent.atomic.AtomicReference
 
@@ -8,12 +9,14 @@ import org.asciidoctor.extension.Postprocessor
 
 class HtmlLayoutWrapper(opts: java.util.HashMap[String, AnyRef]) extends Postprocessor(opts) {
 
-  private val filename = Option(opts.get("html-layout.file")).getOrElse("src/adoc/layout.html").toString
-  private val bodyMarker = Option(opts.get("html-layout.body-marker")).getOrElse("""\{\{body\}\}""").toString
-  private val titleMarker = Option(opts.get("html-layout.title-marker")).getOrElse("""\{\{title\}\}""").toString
+  println("opts = " + opts)
 
-  private val assetsRelPath = Option(opts.get("assets-rel-path")).getOrElse("assets/")
-  private val titleSuffix: List[String] = Option(opts.get("title-suffix")).map(_.toString :: Nil).getOrElse(Nil)
+  private val filename = Option(opts.get("html-layout.file")).getOrElse("src/adoc/layout.html").toString
+  private val bodyMarker = Option(opts.get("html-layout.body-marker")).getOrElse("""{{body}}""").toString
+  private val titleMarker = Option(opts.get("html-layout.title-marker")).getOrElse("""{{title}}""").toString
+
+  def assetsRelPath(opts: util.Map[AnyRef, AnyRef]): String = Option(opts.get("assets-rel-path")).map(_.toString).getOrElse("assets/")
+  private val titleSuffix: String = Option(opts.get("title-suffix")).map(" – " + _.toString).getOrElse("")
 
   lazy val file = new File(filename)
 
@@ -42,10 +45,11 @@ class HtmlLayoutWrapper(opts: java.util.HashMap[String, AnyRef]) extends Postpro
 
   override def process(document: Document, input: String): String = if (document.basebackend("html")) {
     val docTitle = Option(document.doctitle()).getOrElse("")
+
     template
-      .replaceAll(bodyMarker, input)
-      .replaceAll(titleMarker, (docTitle :: titleSuffix).mkString(" – "))
-      .replaceAll("assets/", assetsRelPath.toString) // this is a hack, because Processors are unaware which file they work on
+      .replaceAll("""assets/""", assetsRelPath(document.getOptions)) // this is a hack, because Processors are unaware which file they work on
+      .replace(bodyMarker, input)
+      .replace(titleMarker, s"$docTitle$titleSuffix")
   } else input
 
 }

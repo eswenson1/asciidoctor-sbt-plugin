@@ -4,7 +4,6 @@ import java.io.{BufferedReader, FileReader, FileWriter}
 import java.util
 
 import com.github.sommeri.less4j.utils.URIUtils
-import com.google.common.collect.Maps
 import org.asciidoctor.AsciiDocDirectoryWalker
 import org.asciidoctor.extension._
 import org.asciidoctor.internal.AsciidoctorModule
@@ -13,7 +12,6 @@ import sbt.Keys._
 import sbt._
 
 import scala.collection.JavaConversions._
-import scala.collection.JavaConverters._
 import scala.collection.immutable
 
 object SbtAsciidoctor extends AutoPlugin {
@@ -62,19 +60,26 @@ object SbtAsciidoctor extends AutoPlugin {
 
     generate in AsciiDoctor := {
       val log = streams.value.log
-      val opts: util.HashMap[String, AnyRef] = Maps.newHashMap((options in AsciiDoctor).value.asJava) // asciidoctors API requires the HashMap explicitly
+      val mutableOpts: util.HashMap[String, AnyRef] = {
+         // asciidoctors API requires the HashMap explicitly
+        val m = new util.HashMap[String, AnyRef]()
+        (options in AsciiDoctor).value foreach { case (k, v) => m.put(k, v) }
+        m
+      }
       val extns = (extensions in AsciiDoctor).value
 
-      registerExtensions(opts, engine.javaExtensionRegistry, extns)
+      registerExtensions(mutableOpts, engine.javaExtensionRegistry, extns)
 
       val docsWalker = new AsciiDocDirectoryWalker((adocDir in AsciiDoctor).value.getAbsolutePath)
 
       val files = docsWalker.scan() map { adoc =>
         val target = new File(adoc.getAbsolutePath.replace(".adoc", ".html"))
         log.info(s"Generating: $target ...")
-        opts.put("assets-rel-path", URIUtils.relativize(adoc, (assetsDir in AsciiDoctor).value))
 
-        writeToFile(opts, adoc, target)
+        // todo expose immutable here
+        mutableOpts.put("assets-rel-path", URIUtils.relativize(target, (assetsDir in AsciiDoctor).value))
+
+        writeToFile(mutableOpts, adoc, target)
       }
       files.toSeq
     }

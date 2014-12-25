@@ -1,8 +1,22 @@
 = Table of contents
+:icons: font
+:idprefix:
+:idseparator: -
+:sectanchors:
+:sectlinks:
+:source-highlighter: pygments
+:experimental:
+:mdash: &#8212;
+:language: asciidoc
 
-:toc:
+= Table of contents
 
-include::intro/quick-start.adoc[]
+. <<example.adoc#,Example, start here>>
+. Actors
+.. <<actors/actors.adoc#,Actors>>
+. Intro
+.. <<intro/quick-start.adoc#,Quick Start>>
+.. <<intro/second.adoc#,Second>>
 
 
 == This is another example section
