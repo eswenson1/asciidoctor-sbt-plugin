@@ -97,9 +97,7 @@ be solved by making these actors named classes instead (if they are not
 declared within a top-level ``object`` then the enclosing instance’s ``this``
 reference needs to be passed as the first argument).
 
-.. warning::
-
-  Declaring one actor within another is very dangerous and breaks actor
+WARNING: Declaring one actor within another is very dangerous and breaks actor
   encapsulation. Never pass an actor’s ``this`` reference into :class:`Props`!
 
 ==== Recommended Practices
@@ -164,9 +162,7 @@ __ Props_
    :include: creating-indirectly
    :exclude: obtain-fresh-Actor-instance-from-DI-framework
 
-.. warning::
-
-  You might be tempted at times to offer an :class:`IndirectActorProducer`
+WARNING: You might be tempted at times to offer an :class:`IndirectActorProducer`
   which always returns the same instance, e.g. by using a ``lazy val``. This is
   not supported, as it goes against the meaning of an actor restart, which is
   described here: :ref:`supervision-restart`.
@@ -365,9 +361,7 @@ that triggered the exception will not be received again. Any message
 sent to an actor while it is being restarted will be queued to its mailbox as
 usual.
 
-.. warning::
-
-  Be aware that the ordering of failure notifications relative to user messages
+WARNING: Be aware that the ordering of failure notifications relative to user messages
   is not deterministic. In particular, a parent might restart its child before
   it has processed the last messages sent by the child before the failure.
   See :ref:`message-ordering` for details.
@@ -531,9 +525,7 @@ returned :class:`Future` with a value. The ``ask`` operation involves creating
 an internal actor for handling this reply, which needs to have a timeout after
 which it is destroyed in order not to leak resources; see more below.
 
-.. warning::
-
-    To complete the future with an exception you need send a Failure message to the sender.
+WARNING:   To complete the future with an exception you need send a Failure message to the sender.
     This is *not done automatically* when an actor throws an exception while processing a message.
 
 .. includecode:: code/docs/actor/ActorDocSpec.scala#reply-exception
@@ -557,9 +549,7 @@ The ``onComplete``, ``onSuccess``, or ``onFailure`` methods of the ``Future`` ca
 used to register a callback to get a notification when the Future completes.
 Gives you a way to avoid blocking.
 
-.. warning::
-
-  When using future callbacks, such as ``onComplete``, ``onSuccess``, and ``onFailure``,
+WARNING: When using future callbacks, such as ``onComplete``, ``onSuccess``, and ``onFailure``,
   inside actors you need to carefully avoid closing over
   the containing actor’s reference, i.e. do not call methods or access mutable state
   on the enclosing actor from within the callback. This would break the actor
@@ -696,9 +686,7 @@ actor to initiate the process of stopping the actor. You can use ``PoisonPill`` 
 this, but then you have limited possibilities to perform interactions with other actors
 before stopping the target actor. Simple cleanup tasks can be handled in ``postStop``.
 
-.. warning::
-
-  Keep in mind that an actor stopping and its name being deregistered are
+WARNING: Keep in mind that an actor stopping and its name being deregistered are
   separate events which happen asynchronously from each other. Therefore it may
   be that you will find the name still in use after ``gracefulStop()``
   returned. In order to guarantee proper deregistration, only reuse names from
@@ -717,9 +705,7 @@ runtime: invoke the ``context.become`` method from within the Actor.
 message handler. The hotswapped code is kept in a Stack which can be pushed and
 popped.
 
-.. warning::
-
-  Please note that the actor will revert to its original behavior when restarted by its Supervisor.
+WARNING: Please note that the actor will revert to its original behavior when restarted by its Supervisor.
 
 To hotswap the Actor behavior using ``become``:
 
@@ -790,9 +776,7 @@ The stash is backed by a ``scala.collection.immutable.Vector``. As a
 result, even a very large number of messages may be stashed without a
 major impact on performance.
 
-.. warning::
-
-  Note that the ``Stash`` trait must be mixed into (a subclass of) the
+WARNING: Note that the ``Stash`` trait must be mixed into (a subclass of) the
   ``Actor`` trait before any trait/class that overrides the ``preRestart``
   callback. This means it's not possible to write
   ``Actor with MyActor with Stash`` if ``MyActor`` overrides ``preRestart``.
@@ -921,9 +905,7 @@ of the actor.
 If the actor may receive messages before it has been initialized, a useful tool can be the ``Stash`` to save messages
 until the initialization finishes, and replaying them after the actor became initialized.
 
-.. warning::
-
-  This pattern should be used with care, and applied only when none of the patterns above are applicable. One of
+WARNING: This pattern should be used with care, and applied only when none of the patterns above are applicable. One of
   the potential issues is that messages might be lost when sent to remote actors. Also, publishing an ``ActorRef`` in
   an uninitialized state might lead to the condition that it receives a user message before the initialization has been
   done.

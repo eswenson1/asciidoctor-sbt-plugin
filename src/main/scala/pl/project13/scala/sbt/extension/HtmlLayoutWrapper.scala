@@ -9,8 +9,6 @@ import org.asciidoctor.extension.Postprocessor
 
 class HtmlLayoutWrapper(opts: java.util.HashMap[String, AnyRef]) extends Postprocessor(opts) {
 
-  println("opts = " + opts)
-
   private val filename = Option(opts.get("html-layout.file")).getOrElse("src/adoc/layout.html").toString
   private val bodyMarker = Option(opts.get("html-layout.body-marker")).getOrElse("""{{body}}""").toString
   private val titleMarker = Option(opts.get("html-layout.title-marker")).getOrElse("""{{title}}""").toString
@@ -49,7 +47,7 @@ class HtmlLayoutWrapper(opts: java.util.HashMap[String, AnyRef]) extends Postpro
     template
       .replaceAll("""assets/""", assetsRelPath(document.getOptions)) // this is a hack, because Processors are unaware which file they work on
       .replace(bodyMarker, input)
-      .replace(titleMarker, s"$docTitle$titleSuffix")
+      .replaceAll(titleMarker, s"$docTitle$titleSuffix")
   } else input
 
 }
