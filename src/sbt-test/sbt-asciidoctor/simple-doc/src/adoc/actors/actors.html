@@ -117,7 +117,7 @@
             <div class="row">
                 <div class="span9">
 
-                    <h1 id="_actors" class="sect0">Actors</h1>
+                    <h1 id="_actors" class="sect0"><a class="anchor" href="#_actors"></a>Actors</h1>
 <div class="paragraph">
 <p>The `Actor Model`_ provides a higher level of abstraction for writing concurrent
 and distributed systems. It alleviates the developer from having to deal with
@@ -139,7 +139,7 @@ its syntax from Erlang.</p>
 </ol>
 </div>
 <div class="sect1">
-<h2 id="_creating_actors">Creating Actors</h2>
+<h2 id="_creating_actors"><a class="anchor" href="#_creating_actors"></a>Creating Actors</h2>
 <div class="sectionbody">
 <div class="admonitionblock note">
 <table>
@@ -157,7 +157,7 @@ may also help to read :ref:`addressing`.
 </table>
 </div>
 <div class="sect2">
-<h3 id="_defining_an_actor_class">Defining an Actor class</h3>
+<h3 id="_defining_an_actor_class"><a class="anchor" href="#_defining_an_actor_class"></a>Defining an Actor class</h3>
 <div class="paragraph">
 <p>Actor classes are implemented by extending the Actor class and implementing the
 :meth:`receive` method. The :meth:`receive` method should define a series of case
@@ -168,13 +168,18 @@ along with the implementation of how the messages should be processed.</p>
 <div class="paragraph">
 <p>Here is an example:</p>
 </div>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>includecode:: code/docs/actor/ActorDocSpec.scala
-:include: imports1,my-actor</p>
-</li>
-</ol>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>link:../../test/scala/akka/actor/actor/ActorDocSpec.scala[]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>link:./Example.txt[]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="./Example.txt" class="bare">./Example.txt</a></p>
 </div>
 <div class="paragraph">
 <p>Please note that the Akka Actor <code>receive</code> message loop is exhaustive, which
@@ -198,7 +203,7 @@ construction.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_props">Props</h3>
+<h3 id="_props"><a class="anchor" href="#_props"></a>Props</h3>
 <div class="paragraph">
 <p><a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> is a configuration class to specify options for the creation
 of actors, think of it as an immutable and thus freely shareable recipe for
@@ -226,7 +231,7 @@ verified during construction of the <a href="http://doc.akka.io/api/akka/2.3.8/#
 found.</p>
 </div>
 <div class="sect3">
-<h4 id="_dangerous_variants">Dangerous Variants</h4>
+<h4 id="_dangerous_variants"><a class="anchor" href="#_dangerous_variants"></a>Dangerous Variants</h4>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -268,7 +273,7 @@ Declaring one actor within another is very dangerous and breaks actor
 </div>
 </div>
 <div class="sect3">
-<h4 id="_recommended_practices">Recommended Practices</h4>
+<h4 id="_recommended_practices"><a class="anchor" href="#_recommended_practices"></a>Recommended Practices</h4>
 <div class="paragraph">
 <p>It is a good idea to provide factory methods on the companion object of each
 class:`Actor` which help keeping the creation of suitable <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> as
@@ -287,7 +292,7 @@ a reference to its enclosing scope:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_creating_actors_with_props">Creating Actors with Props</h3>
+<h3 id="_creating_actors_with_props"><a class="anchor" href="#_creating_actors_with_props"></a>Creating Actors with Props</h3>
 <div class="paragraph">
 <p>Actors are created by passing a <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>akka.actor.Props</code></a> instance into the
 :meth:`actorOf` factory method which is available on <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSystem" class="scaladoc-link" title="akka.actor.ActorSystem"><code>ActorSystem</code></a> and
@@ -339,7 +344,7 @@ another child to the same parent an <code>InvalidActorNameException</code> is th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_dependency_injection">Dependency Injection</h3>
+<h3 id="_dependency_injection"><a class="anchor" href="#_dependency_injection"></a>Dependency Injection</h3>
 <div class="paragraph">
 <p>If your Actor has a constructor that takes parameters then those need to
 be part of the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> as well, as described `above`__. But there
@@ -388,7 +393,7 @@ in Typesafe Activator.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_the_inbox">The Inbox</h3>
+<h3 id="_the_inbox"><a class="anchor" href="#_the_inbox"></a>The Inbox</h3>
 <div class="paragraph">
 <p>When writing code outside of actors which shall communicate with actors, the
 <code>ask</code> pattern can be a solution (see below), but there are two thing it
@@ -418,7 +423,7 @@ Watching an actor is quite simple as well:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_actor_api">Actor API</h3>
+<h3 id="_actor_api"><a class="anchor" href="#_actor_api"></a>Actor API</h3>
 <div class="paragraph">
 <p>The <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Actor" class="scaladoc-link" title="akka.actor.Actor"><code>Actor</code></a> trait defines only one abstract method, the above mentioned
 :meth:`receive`, which implements the behavior of the actor.</p>
@@ -514,7 +519,7 @@ trait.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_actor_lifecycle">Actor Lifecycle</h3>
+<h3 id="_actor_lifecycle"><a class="anchor" href="#_actor_lifecycle"></a>Actor Lifecycle</h3>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -560,7 +565,7 @@ method of the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelect
 </div>
 </div>
 <div class="sect2">
-<h3 id="_lifecycle_monitoring_aka_deathwatch">Lifecycle Monitoring aka DeathWatch</h3>
+<h3 id="_lifecycle_monitoring_aka_deathwatch"><a class="anchor" href="#_lifecycle_monitoring_aka_deathwatch"></a>Lifecycle Monitoring aka DeathWatch</h3>
 <div class="paragraph">
 <p>In order to be notified when another actor terminates (i.e. stops permanently,
 not temporary failure and restart), an actor may register itself for reception
@@ -601,7 +606,7 @@ no <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="sca
 </div>
 </div>
 <div class="sect2">
-<h3 id="_start_hook">Start Hook</h3>
+<h3 id="_start_hook"><a class="anchor" href="#_start_hook"></a>Start Hook</h3>
 <div class="paragraph">
 <p>Right after starting the actor, its :meth:`preStart` method is invoked.</p>
 </div>
@@ -623,7 +628,7 @@ restart.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_restart_hooks">Restart Hooks</h3>
+<h3 id="_restart_hooks"><a class="anchor" href="#_restart_hooks"></a>Restart Hooks</h3>
 <div class="paragraph">
 <p>All actors are supervised, i.e. linked to another actor with a fault
 handling strategy. Actors may be restarted in case an exception is thrown while
@@ -691,7 +696,7 @@ Be aware that the ordering of failure notifications relative to user messages
 </div>
 </div>
 <div class="sect2">
-<h3 id="_stop_hook">Stop Hook</h3>
+<h3 id="_stop_hook"><a class="anchor" href="#_stop_hook"></a>Stop Hook</h3>
 <div class="paragraph">
 <p>After stopping an actor, its :meth:`postStop` hook is called, which may be used
 e.g. for deregistering this actor from other services. This hook is guaranteed
@@ -710,7 +715,7 @@ sent to a stopped actor will be redirected to the :obj:`deadLetters` of the
 </div>
 </div>
 <div class="sect1">
-<h2 id="_identifying_actors_via_actor_selection">Identifying Actors via Actor Selection</h2>
+<h2 id="_identifying_actors_via_actor_selection"><a class="anchor" href="#_identifying_actors_via_actor_selection"></a>Identifying Actors via Actor Selection</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>As described in :ref:`addressing`, each actor has a unique logical path, which
@@ -816,7 +821,7 @@ didn&#8217;t complete within the supplied <code>timeout</code>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_messages_and_immutability">Messages and immutability</h2>
+<h2 id="_messages_and_immutability"><a class="anchor" href="#_messages_and_immutability"></a>Messages and immutability</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>IMPORTANT</strong>: Messages can be any kind of object but have to be
@@ -849,7 +854,7 @@ case class Register(user: User)</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_send_messages">Send messages</h2>
+<h2 id="_send_messages"><a class="anchor" href="#_send_messages"></a>Send messages</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Messages are sent to an Actor through one of the following methods.</p>
@@ -892,7 +897,7 @@ There are performance implications of using <code>ask</code> since something nee
 </ol>
 </div>
 <div class="sect2">
-<h3 id="_tell_fire_forget">Tell: Fire-forget</h3>
+<h3 id="_tell_fire_forget"><a class="anchor" href="#_tell_fire_forget"></a>Tell: Fire-forget</h3>
 <div class="paragraph">
 <p>This is the preferred way of sending messages. No blocking waiting for a
 message. This gives the best concurrency and scalability characteristics.</p>
@@ -916,7 +921,7 @@ to reply to the original sender, by using <code>sender() ! replyMsg</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_ask_send_and_receive_future">Ask: Send-And-Receive-Future</h3>
+<h3 id="_ask_send_and_receive_future"><a class="anchor" href="#_ask_send_and_receive_future"></a>Ask: Send-And-Receive-Future</h3>
 <div class="paragraph">
 <p>The <code>ask</code> pattern involves actors as well as futures, hence it is offered as
 a use pattern rather than a method on <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a>:</p>
@@ -1023,7 +1028,7 @@ When using future callbacks, such as <code>onComplete</code>, <code>onSuccess</c
 </div>
 </div>
 <div class="sect2">
-<h3 id="_forward_message">Forward message</h3>
+<h3 id="_forward_message"><a class="anchor" href="#_forward_message"></a>Forward message</h3>
 <div class="paragraph">
 <p>You can forward a message from one actor to another. This means that the
 original sender address/reference is maintained even though the message is going
@@ -1041,7 +1046,7 @@ routers, load-balancers, replicators etc.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_receive_messages">Receive messages</h2>
+<h2 id="_receive_messages"><a class="anchor" href="#_receive_messages"></a>Receive messages</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>An Actor has to implement the <code>receive</code> method to receive messages:</p>
@@ -1072,7 +1077,7 @@ pattern matching. Here is an example:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_reply_to_messages">Reply to messages</h2>
+<h2 id="_reply_to_messages"><a class="anchor" href="#_reply_to_messages"></a>Reply to messages</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you want to have a handle for replying to a message, you can use
@@ -1099,7 +1104,7 @@ defaults to a 'dead-letter' actor ref.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_receive_timeout">Receive timeout</h2>
+<h2 id="_receive_timeout"><a class="anchor" href="#_receive_timeout"></a>Receive timeout</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <code>ActorContext</code> :meth:`setReceiveTimeout` defines the inactivity timeout after which
@@ -1129,7 +1134,7 @@ periods). Pass in <code>Duration.Undefined</code> to switch off this feature.</p
 </div>
 </div>
 <div class="sect1">
-<h2 id="_stopping_actors">Stopping actors</h2>
+<h2 id="_stopping_actors"><a class="anchor" href="#_stopping_actors"></a>Stopping actors</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Actors are stopped by invoking the :meth:`stop` method of a <code>ActorRefFactory</code>,
@@ -1198,7 +1203,7 @@ Since stopping an actor is asynchronous, you cannot immediately reuse the
 </ol>
 </div>
 <div class="sect2">
-<h3 id="_poisonpill">PoisonPill</h3>
+<h3 id="_poisonpill"><a class="anchor" href="#_poisonpill"></a>PoisonPill</h3>
 <div class="paragraph">
 <p>You can also send an actor the <code>akka.actor.PoisonPill</code> message, which will
 stop the actor when the message is processed. <code>PoisonPill</code> is enqueued as
@@ -1207,7 +1212,7 @@ in the mailbox.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_graceful_stop">Graceful Stop</h3>
+<h3 id="_graceful_stop"><a class="anchor" href="#_graceful_stop"></a>Graceful Stop</h3>
 <div class="paragraph">
 <p>:meth:`gracefulStop` is useful if you need to wait for termination or compose ordered
 termination of several actors:</p>
@@ -1261,10 +1266,10 @@ Keep in mind that an actor stopping and its name being deregistered are
 </div>
 </div>
 <div class="sect1">
-<h2 id="_become_unbecome">Become/Unbecome</h2>
+<h2 id="_become_unbecome"><a class="anchor" href="#_become_unbecome"></a>Become/Unbecome</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_upgrade">Upgrade</h3>
+<h3 id="_upgrade"><a class="anchor" href="#_upgrade"></a>Upgrade</h3>
 <div class="paragraph">
 <p>Akka supports hotswapping the Actor’s message loop (e.g. its implementation) at
 runtime: invoke the <code>context.become</code> method from within the Actor.
@@ -1324,7 +1329,7 @@ behavior is not the default).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_encoding_scala_actors_nested_receives_without_accidentally_leaking_memory">Encoding Scala Actors nested receives without accidentally leaking memory</h3>
+<h3 id="_encoding_scala_actors_nested_receives_without_accidentally_leaking_memory"><a class="anchor" href="#_encoding_scala_actors_nested_receives_without_accidentally_leaking_memory"></a>Encoding Scala Actors nested receives without accidentally leaking memory</h3>
 <div class="paragraph">
 <p>See this `Unnested receive example &lt;@github@/akka-docs/rst/scala/code/docs/actor/UnnestedReceives.scala&gt;`_.</p>
 </div>
@@ -1332,7 +1337,7 @@ behavior is not the default).</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_stash">Stash</h2>
+<h2 id="_stash"><a class="anchor" href="#_stash"></a>Stash</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <code>Stash</code> trait enables an actor to temporarily stash away messages
@@ -1439,7 +1444,7 @@ If you want to enforce that your actor can only work with an unbounded stash,
 </div>
 </div>
 <div class="sect1">
-<h2 id="_killing_an_actor">Killing an Actor</h2>
+<h2 id="_killing_an_actor"><a class="anchor" href="#_killing_an_actor"></a>Killing an Actor</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>You can kill an actor by sending a <code>Kill</code> message. This will cause the actor
@@ -1467,14 +1472,14 @@ victim ! Kill</pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_actors_and_exceptions">Actors and exceptions</h2>
+<h2 id="_actors_and_exceptions"><a class="anchor" href="#_actors_and_exceptions"></a>Actors and exceptions</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>It can happen that while a message is being processed by an actor, that some
 kind of exception is thrown, e.g. a database exception.</p>
 </div>
 <div class="sect2">
-<h3 id="_what_happens_to_the_message">What happens to the Message</h3>
+<h3 id="_what_happens_to_the_message"><a class="anchor" href="#_what_happens_to_the_message"></a>What happens to the Message</h3>
 <div class="paragraph">
 <p>If an exception is thrown while a message is being processed (i.e. taken out of
 its mailbox and handed over to the current behavior), then this message will be
@@ -1487,7 +1492,7 @@ would be to have a look at the :ref:`PeekMailbox pattern &lt;mailbox-acking&gt;`
 </div>
 </div>
 <div class="sect2">
-<h3 id="_what_happens_to_the_mailbox">What happens to the mailbox</h3>
+<h3 id="_what_happens_to_the_mailbox"><a class="anchor" href="#_what_happens_to_the_mailbox"></a>What happens to the mailbox</h3>
 <div class="paragraph">
 <p>If an exception is thrown while a message is being processed, nothing happens to
 the mailbox. If the actor is restarted, the same mailbox will be there. So all
@@ -1495,7 +1500,7 @@ messages on that mailbox will be there as well.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_what_happens_to_the_actor">What happens to the actor</h3>
+<h3 id="_what_happens_to_the_actor"><a class="anchor" href="#_what_happens_to_the_actor"></a>What happens to the actor</h3>
 <div class="paragraph">
 <p>If code within an actor throws an exception, that actor is suspended and the
 supervision process is started (see :ref:`supervision`). Depending on the
@@ -1506,7 +1511,7 @@ supervisor’s decision the actor is resumed (as if nothing happened), restarted
 </div>
 </div>
 <div class="sect1">
-<h2 id="_extending_actors_using_partialfunction_chaining">Extending Actors using PartialFunction chaining</h2>
+<h2 id="_extending_actors_using_partialfunction_chaining"><a class="anchor" href="#_extending_actors_using_partialfunction_chaining"></a>Extending Actors using PartialFunction chaining</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Sometimes it can be useful to share common behavior among a few actors, or compose one actor&#8217;s behavior from multiple smaller functions.
@@ -1532,7 +1537,7 @@ traits and implementing the actor&#8217;s :meth:`receive` as combination of thes
 </div>
 </div>
 <div class="sect1">
-<h2 id="_initialization_patterns">Initialization patterns</h2>
+<h2 id="_initialization_patterns"><a class="anchor" href="#_initialization_patterns"></a>Initialization patterns</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The rich lifecycle hooks of Actors provide a useful toolkit to implement various initialization patterns. During the
@@ -1545,7 +1550,7 @@ of an actor, but sometimes one needs initialization to happen only at the birth 
 <code>ActorRef</code> is created. The following sections provide patterns for different initialization needs.</p>
 </div>
 <div class="sect2">
-<h3 id="_initialization_via_constructor">Initialization via constructor</h3>
+<h3 id="_initialization_via_constructor"><a class="anchor" href="#_initialization_via_constructor"></a>Initialization via constructor</h3>
 <div class="paragraph">
 <p>Using the constructor for initialization has various benefits. First of all, it makes it possible to use <code>val</code> fields to store
 any state that does not change during the life of the actor instance, making the implementation of the actor more robust.
@@ -1556,7 +1561,7 @@ restarts. The following section provides a pattern for this case.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_initialization_via_prestart">Initialization via preStart</h3>
+<h3 id="_initialization_via_prestart"><a class="anchor" href="#_initialization_via_prestart"></a>Initialization via preStart</h3>
 <div class="paragraph">
 <p>The method <code>preStart()</code> of an actor is only called once directly during the initialization of the first instance, that
 is, at creation of its <code>ActorRef</code>. In the case of restarts, <code>preStart()</code> is called from <code>postRestart()</code>, therefore
@@ -1584,7 +1589,7 @@ refs.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_initialization_via_message_passing">Initialization via message passing</h3>
+<h3 id="_initialization_via_message_passing"><a class="anchor" href="#_initialization_via_message_passing"></a>Initialization via message passing</h3>
 <div class="paragraph">
 <p>There are cases when it is impossible to pass all the information needed for actor initialization in the constructor,
 for example in the presence of circular dependencies. In this case the actor should listen for an initialization message,

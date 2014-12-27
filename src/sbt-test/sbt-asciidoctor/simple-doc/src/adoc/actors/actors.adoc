@@ -1,5 +1,7 @@
 = Actors
 
+:sectanchors:
+:sourcedir: ../../test/scala/akka/actor
 :scaladoc-import_0: akka.actor._
 
 = Actors
@@ -36,8 +38,15 @@ along with the implementation of how the messages should be processed.
 
 Here is an example:
 
-.. includecode:: code/docs/actor/ActorDocSpec.scala
-   :include: imports1,my-actor
+[source]
+include::{sourcedir}/actor/ActorDocSpec.scala[tags=my-actor]
+
+[source]
+----
+include::./Example.txt[]
+----
+
+include::./Example.txt[]
 
 Please note that the Akka Actor `receive` message loop is exhaustive, which
 is different compared to Erlang and the late Scala Actors. This means that you
