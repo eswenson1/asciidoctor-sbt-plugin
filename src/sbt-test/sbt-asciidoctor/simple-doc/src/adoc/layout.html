@@ -5,15 +5,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>{{title}}</title>
+    <title>{{head.title}}</title>
 
     <link rel="stylesheet" href="assets/style.css" type="text/css"/>
-    <link rel="stylesheet" href="assets/pygments.css" type="text/css"/>
     <link rel="stylesheet" href="assets/prettify.css" type="text/css"/>
     <link rel="stylesheet" href="assets/base.css" type="text/css"/>
     <link rel="stylesheet" href="assets/docs.css" type="text/css"/>
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700"
-          type="text/css"/>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" type="text/css"/>
 
     <script type="text/javascript" src="assets/jquery.js"></script>
     <script type="text/javascript" src="assets/toc.js"></script>
@@ -80,11 +78,13 @@
                                 class="divider">|</span>
                         </li>
                         <li>
+                            Version:
+
                             <div id="version-static">
-                            Version {{version.akka.current}}
+                            {{version.akka.current}}
                             </div>
 
-                            Version <div id="version-picker" style="display: inline-block">
+                            <div id="version-picker" style="display: none">
                                 <ul>
                                     <li>2.3.8</li>
                                     <li>2.3.7</li>
@@ -99,12 +99,11 @@
                                 </ul>
                             </div>
 
-                            <div id="api-lang-static" style="display: inline-block">
+                            <div id="api-lang-static">
                                 <span id="this-api-lang">Scala</span>
                             </div>
 
-                            <div id="api-lang-picker" style="display: inline-block">
-                                for
+                            <div id="api-lang-picker" style="display: none">
                                 <ul style="display: inline-block">
                                     <li value="scala">Scala</li>
                                     <li value="java">Java</li>

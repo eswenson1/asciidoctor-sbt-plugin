@@ -11,3 +11,7 @@ logBuffered := false
 // docs settings
 
 options in AsciiDoctor += ("title-suffix" -> "Akka Dodumentation")
+
+options in AsciiDoctor += ("html-layout.vars" -> List(
+  "{{akka.version.current}}" -> "2.3.8"
+))

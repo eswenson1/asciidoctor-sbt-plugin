@@ -1,0 +1,1686 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>Actors – Akka Dodumentation</title>
+
+    <link rel="stylesheet" href="../assets/style.css" type="text/css"/>
+    <link rel="stylesheet" href="../assets/prettify.css" type="text/css"/>
+    <link rel="stylesheet" href="../assets/base.css" type="text/css"/>
+    <link rel="stylesheet" href="../assets/docs.css" type="text/css"/>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" type="text/css"/>
+
+    <script type="text/javascript" src="../assets/jquery.js"></script>
+    <script type="text/javascript" src="../assets/toc.js"></script>
+    <script type="text/javascript" src="../assets/prettify.js"></script>
+    <script type="text/javascript" src="../assets/highlightCode.js"></script>
+    <script type="text/javascript" src="../assets/effects.core.js"></script>
+    <script type="text/javascript" src="../assets/version-picker.js"></script>
+    <script type="text/javascript" src="../assets/effects.highlight.js"></script>
+    <script type="text/javascript" src="../assets/scrollTo.js"></script>
+    <script type="text/javascript" src="../assets/contentsFix.js"></script>
+    <script type="text/javascript" src="../assets/ga.js"></script>
+
+    <link rel="shortcut icon" href="../assets/favicon.ico"/>
+    <link rel="top" title="Akka Documentation" href="../index.html"/>
+    <link rel="up" title="Project Information" href="index.html"/>
+    <link rel="next" title="Project" href="links.html"/>
+    <link rel="prev" title="Licenses" href="licenses.html"/>
+
+</head>
+<body>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="navbar-logo">
+                <a href="http://akka.io"><img class="svg-logo" src="../assets/akka_full_color.svg" alt="akka"/></a>
+            </div>
+            <ul class="nav">
+                <li><a href="http://akka.io/docs">Documentation</a></li>
+                <li><a href="http://akka.io/faq">FAQ</a></li>
+                <li><a href="http://typesafe.com/stack/downloads/akka">Download</a></li>
+                <li><a href="http://groups.google.com/group/akka-user">Mailing List</a></li>
+                <li><a href="http://github.com/akka/akka">Code</a></li>
+                <li><a href="http://typesafe.com/products/typesafe-subscription">Commercial Support</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="main">
+    <div class="container">
+        <div class="page-title">Actors</div>
+        <div class="pdf-link"><a href="../AkkaScala.pdf" title="Akka Scala Documentation"><img
+                src="../assets/pdf-scala-icon.png" style="height: 40px;"/></a></div>
+        <div class="pdf-link"><a href="../AkkaJava.pdf" title="Akka Java Documentation"><img
+                src="../assets/pdf-java-icon.png" style="height: 40px;"/></a></div>
+    </div>
+
+
+    <div class="main-container">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <ul class="breadcrumb">
+                        <li>
+                            <span class="divider">|</span> <a href="links.html">Project</a> <span
+                                class="divider">»</span>
+                        </li>
+                        <li>
+                            <a href="../index.html">Contents</a>
+                        </li>
+                        <li>
+                            <span class="divider">«</span> <a href="licenses.html">Licenses</a> <span
+                                class="divider">|</span>
+                        </li>
+                        <li>
+                            Version:
+
+                            <div id="version-static">
+                            {{version.akka.current}}
+                            </div>
+
+                            <div id="version-picker" style="display: none">
+                                <ul>
+                                    <li>2.3.8</li>
+                                    <li>2.3.7</li>
+                                    <li>2.3.6</li>
+                                    <li>2.3.5</li>
+                                    <li>2.3.4</li>
+                                    <li>2.3.3</li>
+                                    <li>2.3.2</li>
+                                    <li>2.3.1</li>
+                                    <li>2.3.0</li>
+                                    <li>2.4-SNAPSHOT</li>
+                                </ul>
+                            </div>
+
+                            <div id="api-lang-static">
+                                <span id="this-api-lang">Scala</span>
+                            </div>
+
+                            <div id="api-lang-picker" style="display: none">
+                                <ul style="display: inline-block">
+                                    <li value="scala">Scala</li>
+                                    <li value="java">Java</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span9">
+
+                    <h1 id="_actors" class="sect0">Actors</h1>
+<div class="paragraph">
+<p>The `Actor Model`_ provides a higher level of abstraction for writing concurrent
+and distributed systems. It alleviates the developer from having to deal with
+explicit locking and thread management, making it easier to write correct
+concurrent and parallel systems. Actors were defined in the 1973 paper by Carl
+Hewitt but have been popularized by the Erlang language, and used for example at
+Ericsson with great success to build highly concurrent and reliable telecom
+systems.</p>
+</div>
+<div class="paragraph">
+<p>The API of Akka’s Actors is similar to Scala Actors which has borrowed some of
+its syntax from Erlang.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>_Actor Model: <a href="http://en.wikipedia.org/wiki/Actor_model" class="bare">http://en.wikipedia.org/wiki/Actor_model</a></p>
+</li>
+</ol>
+</div>
+<div class="sect1">
+<h2 id="_creating_actors">Creating Actors</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Since Akka enforces parental supervision every actor is supervised and
+(potentially) the supervisor of its children, it is advisable that you
+familiarize yourself with :ref:`actor-systems` and :ref:`supervision` and it
+may also help to read :ref:`addressing`.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_defining_an_actor_class">Defining an Actor class</h3>
+<div class="paragraph">
+<p>Actor classes are implemented by extending the Actor class and implementing the
+:meth:`receive` method. The :meth:`receive` method should define a series of case
+statements (which has the type <code>PartialFunction[Any, Unit]</code>) that defines
+which messages your Actor can handle, using standard Scala pattern matching,
+along with the implementation of how the messages should be processed.</p>
+</div>
+<div class="paragraph">
+<p>Here is an example:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala
+:include: imports1,my-actor</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Please note that the Akka Actor <code>receive</code> message loop is exhaustive, which
+is different compared to Erlang and the late Scala Actors. This means that you
+need to provide a pattern match for all messages that it can accept and if you
+want to be able to handle unknown messages then you need to have a default case
+as in the example above. Otherwise an <code>akka.actor.UnhandledMessage(message,
+sender, recipient)</code> will be published to the <code>ActorSystem&#8217;s
+`EventStream</code>.</p>
+</div>
+<div class="paragraph">
+<p>Note further that the return type of the behavior defined above is <code>Unit</code>; if
+the actor shall reply to the received message then this must be done explicitly
+as explained below.</p>
+</div>
+<div class="paragraph">
+<p>The result of the :meth:`receive` method is a partial function object, which is
+stored within the actor as its “initial behavior”, see `Become/Unbecome`_ for
+further information on changing the behavior of an actor after its
+construction.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_props">Props</h3>
+<div class="paragraph">
+<p><a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> is a configuration class to specify options for the creation
+of actors, think of it as an immutable and thus freely shareable recipe for
+creating an actor including associated deployment information (e.g. which
+dispatcher to use, see more below). Here are some examples of how to create a
+<a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> instance.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#creating-props</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The second variant shows how to pass constructor arguments to the
+<a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Actor" class="scaladoc-link" title="akka.actor.Actor"><code>Actor</code></a> being created, but it should only be used outside of actors as
+explained below.</p>
+</div>
+<div class="paragraph">
+<p>The last line shows a possibility to pass constructor arguments regardless of
+the context it is being used in. The presence of a matching constructor is
+verified during construction of the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> object, resulting in an
+<a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.IllegalArgumentEception" class="scaladoc-link" title="akka.actor.IllegalArgumentEception"><code>IllegalArgumentEception</code></a> if no or multiple matching constructors are
+found.</p>
+</div>
+<div class="sect3">
+<h4 id="_dangerous_variants">Dangerous Variants</h4>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#creating-props-deprecated</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This method is not recommended to be used within another actor because it
+encourages to close over the enclosing scope, resulting in non-serializable
+<a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> and possibly race conditions (breaking the actor encapsulation).
+We will provide a macro-based solution in a future release which allows similar
+syntax without the headaches, at which point this variant will be properly
+deprecated. On the other hand using this variant in a <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> factory in
+the actor’s companion object as documented under “Recommended Practices” below
+is completely fine.</p>
+</div>
+<div class="paragraph">
+<p>There were two use-cases for these methods: passing constructor arguments to
+the actor—which is solved by the newly introduced
+:meth:`Props.apply(clazz, args)` method above or the recommended practice
+below—and creating actors “on the spot” as anonymous classes. The latter should
+be solved by making these actors named classes instead (if they are not
+declared within a top-level <code>object</code> then the enclosing instance’s <code>this</code>
+reference needs to be passed as the first argument).</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Declaring one actor within another is very dangerous and breaks actor
+  encapsulation. Never pass an actor’s <code>this</code> reference into <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a>!
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_recommended_practices">Recommended Practices</h4>
+<div class="paragraph">
+<p>It is a good idea to provide factory methods on the companion object of each
+class:`Actor` which help keeping the creation of suitable <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> as
+close to the actor definition as possible. This also avoids the pitfalls
+associated with using the <code>Props.apply(&#8230;&#8203;)</code> method which takes a by-name
+argument, since within a companion object the given code block will not retain
+a reference to its enclosing scope:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#props-factory</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_actors_with_props">Creating Actors with Props</h3>
+<div class="paragraph">
+<p>Actors are created by passing a <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>akka.actor.Props</code></a> instance into the
+:meth:`actorOf` factory method which is available on <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSystem" class="scaladoc-link" title="akka.actor.ActorSystem"><code>ActorSystem</code></a> and
+<a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorContext" class="scaladoc-link" title="akka.actor.ActorContext"><code>ActorContext</code></a>.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#system-actorOf</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Using the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSystem" class="scaladoc-link" title="akka.actor.ActorSystem"><code>ActorSystem</code></a> will create top-level actors, supervised by the
+actor system’s provided guardian actor, while using an actor’s context will
+create a child actor.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#context-actorOf
+:exclude: plus-some-behavior</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>It is recommended to create a hierarchy of children, grand-children and so on
+such that it fits the logical failure-handling structure of the application,
+see :ref:`actor-systems`.</p>
+</div>
+<div class="paragraph">
+<p>The call to :meth:`actorOf` returns an instance of <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a>. This is a
+handle to the actor instance and the only way to interact with it. The
+<a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a> is immutable and has a one to one relationship with the Actor
+it represents. The <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a> is also serializable and network-aware.
+This means that you can serialize it, send it over the wire and use it on a
+remote host and it will still be representing the same Actor on the original
+node, across the network.</p>
+</div>
+<div class="paragraph">
+<p>The name parameter is optional, but you should preferably name your actors,
+since that is used in log messages and for identifying actors. The name must
+not be empty or start with <code>$</code>, but it may contain URL encoded characters
+(eg. <code>%20</code> for a blank space).  If the given name is already in use by
+another child to the same parent an <code>InvalidActorNameException</code> is thrown.</p>
+</div>
+<div class="paragraph">
+<p>Actors are automatically started asynchronously when created.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependency_injection">Dependency Injection</h3>
+<div class="paragraph">
+<p>If your Actor has a constructor that takes parameters then those need to
+be part of the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> as well, as described `above`__. But there
+are cases when a factory method must be used, for example when the actual
+constructor arguments are determined by a dependency injection framework.</p>
+</div>
+<div class="paragraph">
+<p><em>_ Props</em></p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala
+:include: creating-indirectly
+:exclude: obtain-fresh-Actor-instance-from-DI-framework</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+You might be tempted at times to offer an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.IndirectActorProducer" class="scaladoc-link" title="akka.actor.IndirectActorProducer"><code>IndirectActorProducer</code></a>
+  which always returns the same instance, e.g. by using a <code>lazy val</code>. This is
+  not supported, as it goes against the meaning of an actor restart, which is
+  described here: :ref:`supervision-restart`.
+</td>
+</tr>
+</table>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>When using a dependency injection framework, actor beans *MUST NOT* have
+singleton scope.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Techniques for dependency injection and integration with dependency injection frameworks
+are described in more depth in the
+`Using Akka with Dependency Injection &lt;<a href="http://letitcrash.com/post/55958814293/akka-dependency-injection&gt;`_" class="bare">http://letitcrash.com/post/55958814293/akka-dependency-injection&gt;`_</a>
+guideline and the `Akka Java Spring &lt;<a href="http://www.typesafe.com/activator/template/akka-java-spring&gt;`_" class="bare">http://www.typesafe.com/activator/template/akka-java-spring&gt;`_</a> tutorial
+in Typesafe Activator.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_inbox">The Inbox</h3>
+<div class="paragraph">
+<p>When writing code outside of actors which shall communicate with actors, the
+<code>ask</code> pattern can be a solution (see below), but there are two thing it
+cannot do: receiving multiple replies (e.g. by subscribing an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a>
+to a notification service) and watching other actors’ lifecycle. For these
+purposes there is the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Inbox" class="scaladoc-link" title="akka.actor.Inbox"><code>Inbox</code></a> class:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: ../../../akka-actor-tests/src/test/scala/akka/actor/ActorDSLSpec.scala#inbox</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>There is an implicit conversion from inbox to actor reference which means that
+in this example the sender reference will be that of the actor hidden away
+within the inbox. This allows the reply to be received on the last line.
+Watching an actor is quite simple as well:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: ../../../akka-actor-tests/src/test/scala/akka/actor/ActorDSLSpec.scala#watch</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_actor_api">Actor API</h3>
+<div class="paragraph">
+<p>The <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Actor" class="scaladoc-link" title="akka.actor.Actor"><code>Actor</code></a> trait defines only one abstract method, the above mentioned
+:meth:`receive`, which implements the behavior of the actor.</p>
+</div>
+<div class="paragraph">
+<p>If the current actor behavior does not match a received message,
+:meth:`unhandled` is called, which by default publishes an
+<code>akka.actor.UnhandledMessage(message, sender, recipient)</code> on the actor
+system’s event stream (set configuration item
+<code>akka.actor.debug.unhandled</code> to <code>on</code> to have them converted into
+actual Debug messages).</p>
+</div>
+<div class="paragraph">
+<p>In addition, it offers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:obj:`self` reference to the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a> of the actor</p>
+</li>
+<li>
+<p>:obj:`sender` reference sender Actor of the last received message, typically used as described in :ref:`Actor.Reply`</p>
+</li>
+<li>
+<p>:obj:`supervisorStrategy` user overridable definition the strategy to use for supervising child actors</p>
+<div class="literalblock">
+<div class="content">
+<pre>This strategy is typically declared inside the actor in order to have access
+to the actor’s internal state within the decider function: since failure is
+communicated as a message sent to the supervisor and processed like other
+messages (albeit outside of the normal behavior), all values and variables
+within the actor are available, as is the `sender` reference (which will
+be the immediate child reporting the failure; if the original failure
+occurred within a distant descendant it is still reported one level up at a
+time).</pre>
+</div>
+</div>
+</li>
+<li>
+<p>:obj:`context` exposes contextual information for the actor and the current message, such as:</p>
+</li>
+<li>
+<p>factory methods to create child actors (:meth:`actorOf`)</p>
+</li>
+<li>
+<p>system that the actor belongs to</p>
+</li>
+<li>
+<p>parent supervisor</p>
+</li>
+<li>
+<p>supervised children</p>
+</li>
+<li>
+<p>lifecycle monitoring</p>
+</li>
+<li>
+<p>hotswap behavior stack as described in :ref:`Actor.HotSwap`</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can import the members in the :obj:`context` to avoid prefixing access with <code>context.</code></p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#import-context</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The remaining visible methods are user-overridable life-cycle hooks which are
+described in the following:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: ../../../akka-actor/src/main/scala/akka/actor/Actor.scala#lifecycle-hooks</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The implementations shown above are the defaults provided by the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Actor" class="scaladoc-link" title="akka.actor.Actor"><code>Actor</code></a>
+trait.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>_actor-lifecycle-scala:</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_actor_lifecycle">Actor Lifecycle</h3>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>image:: ../images/actor_lifecycle.png
+:align: center
+:width: 680</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>A path in an actor system represents a "place" which might be occupied
+by a living actor. Initially (apart from system initialized actors) a path is
+empty. When <code>actorOf()</code> is called it assigns an <strong>incarnation</strong> of the actor
+described by the passed <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> to the given path. An actor incarnation is
+identified by the path <strong>and a UID</strong>. A restart only swaps the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Actor" class="scaladoc-link" title="akka.actor.Actor"><code>Actor</code></a>
+instance defined by the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Props" class="scaladoc-link" title="akka.actor.Props"><code>Props</code></a> but the incarnation and hence the UID remains
+the same.</p>
+</div>
+<div class="paragraph">
+<p>The lifecycle of an incarnation ends when the actor is stopped. At
+that point the appropriate lifecycle events are called and watching actors
+are notified of the termination. After the incarnation is stopped, the path can
+be reused again by creating an actor with <code>actorOf()</code>. In this case the
+name of the new incarnation will be the same as the previous one but the
+UIDs will differ.</p>
+</div>
+<div class="paragraph">
+<p>An <code>ActorRef</code> always represents an incarnation (path and UID) not just a
+given path. Therefore if an actor is stopped and a new one with the same
+name is created an <code>ActorRef</code> of the old incarnation will not point
+to the new one.</p>
+</div>
+<div class="paragraph">
+<p><a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a> on the other hand points to the path (or multiple paths
+if wildcards are used) and is completely oblivious to which incarnation is currently
+occupying it. <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a> cannot be watched for this reason. It is
+possible to resolve the current incarnation&#8217;s <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a> living under the
+path by sending an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Identify" class="scaladoc-link" title="akka.actor.Identify"><code>Identify</code></a> message to the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a> which
+will be replied to with an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorIdentity" class="scaladoc-link" title="akka.actor.ActorIdentity"><code>ActorIdentity</code></a> containing the correct reference
+(see :ref:`actorSelection-scala`). This can also be done with the <code>resolveOne</code>
+method of the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a>, which returns a <code>Future</code> of the matching
+<a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lifecycle_monitoring_aka_deathwatch">Lifecycle Monitoring aka DeathWatch</h3>
+<div class="paragraph">
+<p>In order to be notified when another actor terminates (i.e. stops permanently,
+not temporary failure and restart), an actor may register itself for reception
+of the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="scaladoc-link" title="akka.actor.Terminated"><code>Terminated</code></a> message dispatched by the other actor upon
+termination (see :ref:`Stopping Actors`). This service is provided by the
+<a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.DeathWatch" class="scaladoc-link" title="akka.actor.DeathWatch"><code>DeathWatch</code></a> component of the actor system.</p>
+</div>
+<div class="paragraph">
+<p>Registering a monitor is easy:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#watch</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>It should be noted that the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="scaladoc-link" title="akka.actor.Terminated"><code>Terminated</code></a> message is generated
+independent of the order in which registration and termination occur.
+In particular, the watching actor will receive a <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="scaladoc-link" title="akka.actor.Terminated"><code>Terminated</code></a> message even if the
+watched actor has already been terminated at the time of registration.</p>
+</div>
+<div class="paragraph">
+<p>Registering multiple times does not necessarily lead to multiple messages being
+generated, but there is no guarantee that only exactly one such message is
+received: if termination of the watched actor has generated and queued the
+message, and another registration is done before this message has been
+processed, then a second message will be queued, because registering for
+monitoring of an already terminated actor leads to the immediate generation of
+the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="scaladoc-link" title="akka.actor.Terminated"><code>Terminated</code></a> message.</p>
+</div>
+<div class="paragraph">
+<p>It is also possible to deregister from watching another actor’s liveliness
+using <code>context.unwatch(target)</code>. This works even if the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="scaladoc-link" title="akka.actor.Terminated"><code>Terminated</code></a>
+message has already been enqueued in the mailbox; after calling :meth:`unwatch`
+no <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="scaladoc-link" title="akka.actor.Terminated"><code>Terminated</code></a> message for that actor will be processed anymore.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_start_hook">Start Hook</h3>
+<div class="paragraph">
+<p>Right after starting the actor, its :meth:`preStart` method is invoked.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#preStart</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This method is called when the actor is first created. During restarts it is
+called by the default implementation of :meth:`postRestart`, which means that
+by overriding that method you can choose whether the initialization code in
+this method is called only exactly once for this actor or for every restart.
+Initialization code which is part of the actor’s constructor will always be
+called when an instance of the actor class is created, which happens at every
+restart.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_restart_hooks">Restart Hooks</h3>
+<div class="paragraph">
+<p>All actors are supervised, i.e. linked to another actor with a fault
+handling strategy. Actors may be restarted in case an exception is thrown while
+processing a message (see :ref:`supervision`). This restart involves the hooks
+mentioned above:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The old actor is informed by calling :meth:`preRestart` with the exception
+which caused the restart and the message which triggered that exception; the
+latter may be <code>None</code> if the restart was not caused by processing a
+message, e.g. when a supervisor does not trap the exception and is restarted
+in turn by its supervisor, or if an actor is restarted due to a sibling’s
+failure. If the message is available, then that message’s sender is also
+accessible in the usual way (i.e. by calling <code>sender</code>).</p>
+<div class="literalblock">
+<div class="content">
+<pre>This method is the best place for cleaning up, preparing hand-over to the
+fresh actor instance, etc.  By default it stops all children and calls
+:meth:`postStop`.</pre>
+</div>
+</div>
+</li>
+<li>
+<p>The initial factory from the <code>actorOf</code> call is used
+to produce the fresh instance.</p>
+</li>
+<li>
+<p>The new actor’s :meth:`postRestart` method is invoked with the exception
+which caused the restart. By default the :meth:`preStart`
+is called, just as in the normal start-up case.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>An actor restart replaces only the actual actor object; the contents of the
+mailbox is unaffected by the restart, so processing of messages will resume
+after the :meth:`postRestart` hook returns. The message
+that triggered the exception will not be received again. Any message
+sent to an actor while it is being restarted will be queued to its mailbox as
+usual.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Be aware that the ordering of failure notifications relative to user messages
+  is not deterministic. In particular, a parent might restart its child before
+  it has processed the last messages sent by the child before the failure.
+  See :ref:`message-ordering` for details.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>_stop-hook-scala:</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_stop_hook">Stop Hook</h3>
+<div class="paragraph">
+<p>After stopping an actor, its :meth:`postStop` hook is called, which may be used
+e.g. for deregistering this actor from other services. This hook is guaranteed
+to run after message queuing has been disabled for this actor, i.e. messages
+sent to a stopped actor will be redirected to the :obj:`deadLetters` of the
+:obj:`ActorSystem`.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>_actorSelection-scala:</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_identifying_actors_via_actor_selection">Identifying Actors via Actor Selection</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As described in :ref:`addressing`, each actor has a unique logical path, which
+is obtained by following the chain of actors from child to parent until
+reaching the root of the actor system, and it has a physical path, which may
+differ if the supervision chain includes any remote supervisors. These paths
+are used by the system to look up actors, e.g. when a remote message is
+received and the recipient is searched, but they are also useful more directly:
+actors may look up other actors by specifying absolute or relative
+paths—logical or physical—and receive back an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a> with the
+result:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#selection-local</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The supplied path is parsed as a :class:`java.net.URI`, which basically means
+that it is split on <code>/</code> into path elements. If the path starts with <code>/</code>, it
+is absolute and the look-up starts at the root guardian (which is the parent of
+<code>"/user"</code>); otherwise it starts at the current actor. If a path element equals
+<code>..</code>, the look-up will take a step “up” towards the supervisor of the
+currently traversed actor, otherwise it will step “down” to the named child.
+It should be noted that the <code>..</code> in actor paths here always means the logical
+structure, i.e. the supervisor.</p>
+</div>
+<div class="paragraph">
+<p>The path elements of an actor selection may contain wildcard patterns allowing for
+broadcasting of messages to that section:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#selection-wildcard</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Messages can be sent via the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a> and the path of the
+<a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a> is looked up when delivering each message. If the selection
+does not match any actors the message will be dropped.</p>
+</div>
+<div class="paragraph">
+<p>To acquire an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a> for an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a> you need to send
+a message to the selection and use the <code>sender()</code> reference of the reply from
+the actor. There is a built-in <code>Identify</code> message that all Actors will
+understand and automatically reply to with a <code>ActorIdentity</code> message
+containing the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a>. This message is handled specially by the
+actors which are traversed in the sense that if a concrete name lookup fails
+(i.e. a non-wildcard path element does not correspond to a live actor) then a
+negative result is generated. Please note that this does not mean that delivery
+of that reply is guaranteed, it still is a normal message.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#identify</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You can also acquire an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a> for an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a> with
+the <code>resolveOne</code> method of the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorSelection" class="scaladoc-link" title="akka.actor.ActorSelection"><code>ActorSelection</code></a>. It returns a <code>Future</code>
+of the matching <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a> if such an actor exists. It is completed with
+failure <a id="akka.actor.ActorNotFound"></a> if no such actor exists or the identification
+didn&#8217;t complete within the supplied <code>timeout</code>.</p>
+</div>
+<div class="paragraph">
+<p>Remote actor addresses may also be looked up, if :ref:`remoting &lt;remoting-scala&gt;` is enabled:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#selection-remote</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>An example demonstrating actor look-up is given in :ref:`remote-sample-scala`.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<code>actorFor</code> is deprecated in favor of <code>actorSelection</code> because actor references
+  acquired with <code>actorFor</code> behaves different for local and remote actors.
+  In the case of a local actor reference, the named actor needs to exist before the
+  lookup, or else the acquired reference will be an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.EmptyLocalActorRef" class="scaladoc-link" title="akka.actor.EmptyLocalActorRef"><code>EmptyLocalActorRef</code></a>.
+  This will be true even if an actor with that exact path is created after acquiring
+  the actor reference. For remote actor references acquired with <code>actorFor</code> the
+  behaviour is different and sending messages to such a reference will under the hood
+  look up the actor by path on the remote system for every message send.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_messages_and_immutability">Messages and immutability</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>IMPORTANT</strong>: Messages can be any kind of object but have to be
+immutable. Scala can’t enforce immutability (yet) so this has to be by
+convention. Primitives like String, Int, Boolean are always immutable. Apart
+from these the recommended approach is to use Scala case classes which are
+immutable (if you don’t explicitly expose the state) and works great with
+pattern matching at the receiver side.</p>
+</div>
+<div class="paragraph">
+<p>Here is an example:</p>
+</div>
+<div class="paragraph">
+<p>``scala
+  .. code-block:: scala</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>// define the case class
+case class Register(user: User)</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>  // create a new case class message
+  val message = Register(user)
+``</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_send_messages">Send messages</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Messages are sent to an Actor through one of the following methods.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>!</code> means “fire-and-forget”, e.g. send a message asynchronously and return
+immediately. Also known as <code>tell</code>.</p>
+</li>
+<li>
+<p><code>?</code> sends a message asynchronously and returns a <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Future" class="scaladoc-link" title="akka.actor.Future"><code>Future</code></a>
+representing a possible reply. Also known as <code>ask</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Message ordering is guaranteed on a per-sender basis.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+There are performance implications of using <code>ask</code> since something needs to
+    keep track of when it times out, there needs to be something that bridges
+    a <code>Promise</code> into an <code>ActorRef</code> and it also needs to be reachable through
+    remoting. So always prefer <code>tell</code> for performance, and only <code>ask</code> if you must.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>_actors-tell-sender-scala:</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_tell_fire_forget">Tell: Fire-forget</h3>
+<div class="paragraph">
+<p>This is the preferred way of sending messages. No blocking waiting for a
+message. This gives the best concurrency and scalability characteristics.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#tell</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If invoked from within an Actor, then the sending actor reference will be
+implicitly passed along with the message and available to the receiving Actor
+in its <code>sender(): ActorRef</code> member method. The target actor can use this
+to reply to the original sender, by using <code>sender() ! replyMsg</code>.</p>
+</div>
+<div class="paragraph">
+<p>If invoked from an instance that is <strong>not</strong> an Actor the sender will be
+:obj:`deadLetters` actor reference by default.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ask_send_and_receive_future">Ask: Send-And-Receive-Future</h3>
+<div class="paragraph">
+<p>The <code>ask</code> pattern involves actors as well as futures, hence it is offered as
+a use pattern rather than a method on <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorRef" class="scaladoc-link" title="akka.actor.ActorRef"><code>ActorRef</code></a>:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#ask-pipeTo</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This example demonstrates <code>ask</code> together with the <code>pipeTo</code> pattern on
+futures, because this is likely to be a common combination. Please note that
+all of the above is completely non-blocking and asynchronous: <code>ask</code> produces
+a <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Future" class="scaladoc-link" title="akka.actor.Future"><code>Future</code></a>, three of which are composed into a new future using the
+for-comprehension and then <code>pipeTo</code> installs an <code>onComplete</code>-handler on the
+future to affect the submission of the aggregated <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Result" class="scaladoc-link" title="akka.actor.Result"><code>Result</code></a> to another
+actor.</p>
+</div>
+<div class="paragraph">
+<p>Using <code>ask</code> will send a message to the receiving Actor as with <code>tell</code>, and
+the receiving actor must reply with <code>sender() ! reply</code> in order to complete the
+returned <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Future" class="scaladoc-link" title="akka.actor.Future"><code>Future</code></a> with a value. The <code>ask</code> operation involves creating
+an internal actor for handling this reply, which needs to have a timeout after
+which it is destroyed in order not to leak resources; see more below.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+To complete the future with an exception you need send a Failure message to the sender.
+    This is <strong>not done automatically</strong> when an actor throws an exception while processing a message.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#reply-exception</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If the actor does not complete the future, it will expire after the timeout
+period, completing it with an <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.AskTimeoutException" class="scaladoc-link" title="akka.actor.AskTimeoutException"><code>AskTimeoutException</code></a>.  The timeout is
+taken from one of the following locations in order of precedence:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>explicitly given timeout as in:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#using-explicit-timeout</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>implicit argument of type :class:`akka.util.Timeout`, e.g.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#using-implicit-timeout</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>See :ref:`futures-scala` for more information on how to await or query a
+future.</p>
+</div>
+<div class="paragraph">
+<p>The <code>onComplete</code>, <code>onSuccess</code>, or <code>onFailure</code> methods of the <code>Future</code> can be
+used to register a callback to get a notification when the Future completes.
+Gives you a way to avoid blocking.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+When using future callbacks, such as <code>onComplete</code>, <code>onSuccess</code>, and <code>onFailure</code>,
+  inside actors you need to carefully avoid closing over
+  the containing actor’s reference, i.e. do not call methods or access mutable state
+  on the enclosing actor from within the callback. This would break the actor
+  encapsulation and may introduce synchronization bugs and race conditions because
+  the callback will be scheduled concurrently to the enclosing actor. Unfortunately
+  there is not yet a way to detect these illegal accesses at compile time.
+  See also: :ref:`jmm-shared-state`
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_forward_message">Forward message</h3>
+<div class="paragraph">
+<p>You can forward a message from one actor to another. This means that the
+original sender address/reference is maintained even though the message is going
+through a 'mediator'. This can be useful when writing actors that work as
+routers, load-balancers, replicators etc.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#forward</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_receive_messages">Receive messages</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An Actor has to implement the <code>receive</code> method to receive messages:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: ../../../akka-actor/src/main/scala/akka/actor/Actor.scala#receive</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This method returns a <code>PartialFunction</code>, e.g. a ‘match/case’ clause in
+which the message can be matched against the different case clauses using Scala
+pattern matching. Here is an example:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala
+:include: imports1,my-actor</p>
+</li>
+<li>
+<p>_Actor.Reply:</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reply_to_messages">Reply to messages</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you want to have a handle for replying to a message, you can use
+<code>sender()</code>, which gives you an ActorRef. You can reply by sending to
+that ActorRef with <code>sender() ! replyMsg</code>. You can also store the ActorRef
+for replying later, or passing on to other actors. If there is no sender (a
+message was sent without an actor or future context) then the sender
+defaults to a 'dead-letter' actor ref.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>code-block:: scala</p>
+<div class="literalblock">
+<div class="content">
+<pre>case request =&gt;
+  val result = process(request)
+  sender() ! result       // will have dead-letter actor as default</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_receive_timeout">Receive timeout</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>ActorContext</code> :meth:`setReceiveTimeout` defines the inactivity timeout after which
+the sending of a <code>ReceiveTimeout</code> message is triggered.
+When specified, the receive function should be able to handle an <code>akka.actor.ReceiveTimeout</code> message.
+1 millisecond is the minimum supported timeout.</p>
+</div>
+<div class="paragraph">
+<p>Please note that the receive timeout might fire and enqueue the <code>ReceiveTimeout</code> message right after
+another message was enqueued; hence it is <strong>not guaranteed</strong> that upon reception of the receive
+timeout there must have been an idle period beforehand as configured via this method.</p>
+</div>
+<div class="paragraph">
+<p>Once set, the receive timeout stays in effect (i.e. continues firing repeatedly after inactivity
+periods). Pass in <code>Duration.Undefined</code> to switch off this feature.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#receive-timeout</p>
+</li>
+<li>
+<p>_stopping-actors-scala:</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_stopping_actors">Stopping actors</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Actors are stopped by invoking the :meth:`stop` method of a <code>ActorRefFactory</code>,
+i.e. <code>ActorContext</code> or <code>ActorSystem</code>. Typically the context is used for stopping
+child actors and the system for stopping top level actors. The actual termination of
+the actor is performed asynchronously, i.e. :meth:`stop` may return before the actor is
+stopped.</p>
+</div>
+<div class="paragraph">
+<p>Processing of the current message, if any, will continue before the actor is stopped,
+but additional messages in the mailbox will not be processed. By default these
+messages are sent to the :obj:`deadLetters` of the :obj:`ActorSystem`, but that
+depends on the mailbox implementation.</p>
+</div>
+<div class="paragraph">
+<p>Termination of an actor proceeds in two steps: first the actor suspends its
+mailbox processing and sends a stop command to all its children, then it keeps
+processing the internal termination notifications from its children until the last one is
+gone, finally terminating itself (invoking :meth:`postStop`, dumping mailbox,
+publishing <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="scaladoc-link" title="akka.actor.Terminated"><code>Terminated</code></a> on the :ref:`DeathWatch &lt;deathwatch-scala&gt;`, telling
+its supervisor). This procedure ensures that actor system sub-trees terminate
+in an orderly fashion, propagating the stop command to the leaves and
+collecting their confirmation back to the stopped supervisor. If one of the
+actors does not respond (i.e. processing a message for extended periods of time
+and therefore not receiving the stop command), this whole process will be
+stuck.</p>
+</div>
+<div class="paragraph">
+<p>Upon :meth:`ActorSystem.shutdown()`, the system guardian actors will be
+stopped, and the aforementioned process will ensure proper termination of the
+whole system.</p>
+</div>
+<div class="paragraph">
+<p>The :meth:`postStop()` hook is invoked after an actor is fully stopped. This
+enables cleaning up of resources:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#postStop
+:exclude: clean-up-some-resources</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Since stopping an actor is asynchronous, you cannot immediately reuse the
+  name of the child you just stopped; this will result in an
+  <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.InvalidActorNameException" class="scaladoc-link" title="akka.actor.InvalidActorNameException"><code>InvalidActorNameException</code></a>. Instead, :meth:`watch()` the terminating
+  actor and create its replacement in response to the <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="scaladoc-link" title="akka.actor.Terminated"><code>Terminated</code></a>
+  message which will eventually arrive.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>_poison-pill-scala:</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_poisonpill">PoisonPill</h3>
+<div class="paragraph">
+<p>You can also send an actor the <code>akka.actor.PoisonPill</code> message, which will
+stop the actor when the message is processed. <code>PoisonPill</code> is enqueued as
+ordinary messages and will be handled after messages that were already queued
+in the mailbox.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_graceful_stop">Graceful Stop</h3>
+<div class="paragraph">
+<p>:meth:`gracefulStop` is useful if you need to wait for termination or compose ordered
+termination of several actors:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#gracefulStop</p>
+</li>
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#gracefulStop-actor</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>When <code>gracefulStop()</code> returns successfully, the actor’s <code>postStop()</code> hook
+will have been executed: there exists a happens-before edge between the end of
+<code>postStop()</code> and the return of <code>gracefulStop()</code>.</p>
+</div>
+<div class="paragraph">
+<p>In the above example a custom <code>Manager.Shutdown</code> message is sent to the target
+actor to initiate the process of stopping the actor. You can use <code>PoisonPill</code> for
+this, but then you have limited possibilities to perform interactions with other actors
+before stopping the target actor. Simple cleanup tasks can be handled in <code>postStop</code>.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Keep in mind that an actor stopping and its name being deregistered are
+  separate events which happen asynchronously from each other. Therefore it may
+  be that you will find the name still in use after <code>gracefulStop()</code>
+  returned. In order to guarantee proper deregistration, only reuse names from
+  within a supervisor you control and only in response to a <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Terminated" class="scaladoc-link" title="akka.actor.Terminated"><code>Terminated</code></a>
+  message, i.e. not for top-level actors.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>_Actor.HotSwap:</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_become_unbecome">Become/Unbecome</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_upgrade">Upgrade</h3>
+<div class="paragraph">
+<p>Akka supports hotswapping the Actor’s message loop (e.g. its implementation) at
+runtime: invoke the <code>context.become</code> method from within the Actor.
+:meth:`become` takes a <code>PartialFunction[Any, Unit]</code> that implements the new
+message handler. The hotswapped code is kept in a Stack which can be pushed and
+popped.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Please note that the actor will revert to its original behavior when restarted by its Supervisor.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To hotswap the Actor behavior using <code>become</code>:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#hot-swap-actor</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This variant of the :meth:`become` method is useful for many different things,
+such as to implement a Finite State Machine (FSM, for an example see <code>Dining
+Hakkers`_). It will replace the current behavior (i.e. the top of the behavior
+stack), which means that you do not use :meth:`unbecome</code>, instead always the
+next behavior is explicitly installed.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>_Dining Hakkers: <a href="http://www.typesafe.com/activator/template/akka-sample-fsm-scala" class="bare">http://www.typesafe.com/activator/template/akka-sample-fsm-scala</a></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The other way of using :meth:`become` does not replace but add to the top of
+the behavior stack. In this case care must be taken to ensure that the number
+of “pop” operations (i.e. :meth:`unbecome`) matches the number of “push” ones
+in the long run, otherwise this amounts to a memory leak (which is why this
+behavior is not the default).</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#swapper</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_encoding_scala_actors_nested_receives_without_accidentally_leaking_memory">Encoding Scala Actors nested receives without accidentally leaking memory</h3>
+<div class="paragraph">
+<p>See this `Unnested receive example &lt;@github@/akka-docs/rst/scala/code/docs/actor/UnnestedReceives.scala&gt;`_.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_stash">Stash</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>Stash</code> trait enables an actor to temporarily stash away messages
+that can not or should not be handled using the actor&#8217;s current
+behavior. Upon changing the actor&#8217;s message handler, i.e., right
+before invoking <code>context.become</code> or <code>context.unbecome</code>, all
+stashed messages can be "unstashed", thereby prepending them to the actor&#8217;s
+mailbox. This way, the stashed messages can be processed in the same
+order as they have been received originally.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The trait <code>Stash</code> extends the marker trait
+    <code>RequiresMessageQueue[DequeBasedMessageQueueSemantics]</code> which
+    requests the system to automatically choose a deque based
+    mailbox implementation for the actor. If you want more control over the
+    mailbox, see the documentation on mailboxes: :ref:`mailboxes-scala`.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Here is an example of the <code>Stash</code> in action:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#stash</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Invoking <code>stash()</code> adds the current message (the message that the
+actor received last) to the actor&#8217;s stash. It is typically invoked
+when handling the default case in the actor&#8217;s message handler to stash
+messages that aren&#8217;t handled by the other cases. It is illegal to
+stash the same message twice; to do so results in an
+<code>IllegalStateException</code> being thrown. The stash may also be bounded
+in which case invoking <code>stash()</code> may lead to a capacity violation,
+which results in a <code>StashOverflowException</code>. The capacity of the
+stash can be configured using the <code>stash-capacity</code> setting (an <code>Int</code>) of the
+mailbox&#8217;s configuration.</p>
+</div>
+<div class="paragraph">
+<p>Invoking <code>unstashAll()</code> enqueues messages from the stash to the
+actor&#8217;s mailbox until the capacity of the mailbox (if any) has been
+reached (note that messages from the stash are prepended to the
+mailbox). In case a bounded mailbox overflows, a
+<code>MessageQueueAppendFailedException</code> is thrown.
+The stash is guaranteed to be empty after calling <code>unstashAll()</code>.</p>
+</div>
+<div class="paragraph">
+<p>The stash is backed by a <code>scala.collection.immutable.Vector</code>. As a
+result, even a very large number of messages may be stashed without a
+major impact on performance.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Note that the <code>Stash</code> trait must be mixed into (a subclass of) the
+  <code>Actor</code> trait before any trait/class that overrides the <code>preRestart</code>
+  callback. This means it&#8217;s not possible to write
+  <code>Actor with MyActor with Stash</code> if <code>MyActor</code> overrides <code>preRestart</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Note that the stash is part of the ephemeral actor state, unlike the
+mailbox. Therefore, it should be managed like other parts of the
+actor&#8217;s state which have the same property. The <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.Stash" class="scaladoc-link" title="akka.actor.Stash"><code>Stash</code></a> trait’s
+implementation of :meth:`preRestart` will call <code>unstashAll()</code>, which is
+usually the desired behavior.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+If you want to enforce that your actor can only work with an unbounded stash,
+      then you should use the <code>UnboundedStash</code> trait instead.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>_killing-actors-scala:</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_killing_an_actor">Killing an Actor</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can kill an actor by sending a <code>Kill</code> message. This will cause the actor
+to throw a <a href="http://doc.akka.io/api/akka/2.3.8/#akka.actor.ActorKilledException" class="scaladoc-link" title="akka.actor.ActorKilledException"><code>ActorKilledException</code></a>, triggering a failure. The actor will
+suspend operation and its supervisor will be asked how to handle the failure,
+which may mean resuming the actor, restarting it or terminating it completely.
+See :ref:`supervision-directives` for more information.</p>
+</div>
+<div class="paragraph">
+<p>Use <code>Kill</code> like this:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>code-block:: scala</p>
+<div class="literalblock">
+<div class="content">
+<pre>// kill the 'victim' actor
+victim ! Kill</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_actors_and_exceptions">Actors and exceptions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It can happen that while a message is being processed by an actor, that some
+kind of exception is thrown, e.g. a database exception.</p>
+</div>
+<div class="sect2">
+<h3 id="_what_happens_to_the_message">What happens to the Message</h3>
+<div class="paragraph">
+<p>If an exception is thrown while a message is being processed (i.e. taken out of
+its mailbox and handed over to the current behavior), then this message will be
+lost. It is important to understand that it is not put back on the mailbox. So
+if you want to retry processing of a message, you need to deal with it yourself
+by catching the exception and retry your flow. Make sure that you put a bound
+on the number of retries since you don&#8217;t want a system to livelock (so
+consuming a lot of cpu cycles without making progress). Another possibility
+would be to have a look at the :ref:`PeekMailbox pattern &lt;mailbox-acking&gt;`.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_happens_to_the_mailbox">What happens to the mailbox</h3>
+<div class="paragraph">
+<p>If an exception is thrown while a message is being processed, nothing happens to
+the mailbox. If the actor is restarted, the same mailbox will be there. So all
+messages on that mailbox will be there as well.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_happens_to_the_actor">What happens to the actor</h3>
+<div class="paragraph">
+<p>If code within an actor throws an exception, that actor is suspended and the
+supervision process is started (see :ref:`supervision`). Depending on the
+supervisor’s decision the actor is resumed (as if nothing happened), restarted
+(wiping out its internal state and starting from scratch) or terminated.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_actors_using_partialfunction_chaining">Extending Actors using PartialFunction chaining</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sometimes it can be useful to share common behavior among a few actors, or compose one actor&#8217;s behavior from multiple smaller functions.
+This is possible because an actor&#8217;s :meth:`receive` method returns an <code>Actor.Receive</code>, which is a type alias for <code>PartialFunction[Any,Unit]</code>,
+and partial functions can be chained together using the <code>PartialFunction#orElse</code> method. You can chain as many functions as you need,
+however you should keep in mind that "first match" wins - which may be important when combining functions that both can handle the same type of message.</p>
+</div>
+<div class="paragraph">
+<p>For example, imagine you have a set of actors which are either <code>Producers</code> or <code>Consumers</code>, yet sometimes it makes sense to
+have an actor share both behaviors. This can be easily achieved without having to duplicate code by extracting the behaviors to
+traits and implementing the actor&#8217;s :meth:`receive` as combination of these partial functions.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/ActorDocSpec.scala#receive-orElse</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Instead of inheritance the same pattern can be applied via composition - one would simply compose the receive method using partial functions from delegates.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_initialization_patterns">Initialization patterns</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The rich lifecycle hooks of Actors provide a useful toolkit to implement various initialization patterns. During the
+lifetime of an <code>ActorRef</code>, an actor can potentially go through several restarts, where the old instance is replaced by
+a fresh one, invisibly to the outside observer who only sees the <code>ActorRef</code>.</p>
+</div>
+<div class="paragraph">
+<p>One may think about the new instances as "incarnations". Initialization might be necessary for every incarnation
+of an actor, but sometimes one needs initialization to happen only at the birth of the first instance when the
+<code>ActorRef</code> is created. The following sections provide patterns for different initialization needs.</p>
+</div>
+<div class="sect2">
+<h3 id="_initialization_via_constructor">Initialization via constructor</h3>
+<div class="paragraph">
+<p>Using the constructor for initialization has various benefits. First of all, it makes it possible to use <code>val</code> fields to store
+any state that does not change during the life of the actor instance, making the implementation of the actor more robust.
+The constructor is invoked for every incarnation of the actor, therefore the internals of the actor can always assume
+that proper initialization happened. This is also the drawback of this approach, as there are cases when one would
+like to avoid reinitializing internals on restart. For example, it is often useful to preserve child actors across
+restarts. The following section provides a pattern for this case.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_initialization_via_prestart">Initialization via preStart</h3>
+<div class="paragraph">
+<p>The method <code>preStart()</code> of an actor is only called once directly during the initialization of the first instance, that
+is, at creation of its <code>ActorRef</code>. In the case of restarts, <code>preStart()</code> is called from <code>postRestart()</code>, therefore
+if not overridden, <code>preStart()</code> is called on every incarnation. However, overriding <code>postRestart()</code> one can disable
+this behavior, and ensure that there is only one call to <code>preStart()</code>.</p>
+</div>
+<div class="paragraph">
+<p>One useful usage of this pattern is to disable creation of new <code>ActorRefs</code> for children during restarts. This can be
+achieved by overriding <code>preRestart()</code>:</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/InitializationDocSpec.scala#preStartInit</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Please note, that the child actors are <strong>still restarted</strong>, but no new <code>ActorRef</code> is created. One can recursively apply
+the same principles for the children, ensuring that their <code>preStart()</code> method is called only at the creation of their
+refs.</p>
+</div>
+<div class="paragraph">
+<p>For more information see :ref:`supervision-restart`.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_initialization_via_message_passing">Initialization via message passing</h3>
+<div class="paragraph">
+<p>There are cases when it is impossible to pass all the information needed for actor initialization in the constructor,
+for example in the presence of circular dependencies. In this case the actor should listen for an initialization message,
+and use <code>become()</code> or a finite state-machine state transition to encode the initialized and uninitialized states
+of the actor.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>includecode:: code/docs/actor/InitializationDocSpec.scala#messageInit</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If the actor may receive messages before it has been initialized, a useful tool can be the <code>Stash</code> to save messages
+until the initialization finishes, and replaying them after the actor became initialized.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+This pattern should be used with care, and applied only when none of the patterns above are applicable. One of
+  the potential issues is that messages might be lost when sent to remote actors. Also, publishing an <code>ActorRef</code> in
+  an uninitialized state might lead to the condition that it receives a user message before the initialization has been
+  done.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+                </div>
+                <div class="span3"><p class="contents-title">Contents</p>
+
+                    <div id="scroller-anchor">
+                        <div id="scroller">
+                            <div id="toc">
+                                <!-- filled in by toc.js -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="footer">
+    <div class="container">
+        <ul>
+            <li><h5>Akka</h5></li>
+            <li><a href="http://akka.io/docs">Documentation</a></li>
+            <li><a href="http://akka.io/faq">FAQ</a></li>
+            <li><a href="http://typesafe.com/stack/downloads/akka">Downloads</a></li>
+            <li><a href="http://akka.io/news">News</a></li>
+            <li><a href="http://letitcrash.com">Blog</a></li>
+        </ul>
+        <ul>
+            <li><h5>Contribute</h5></li>
+            <li><a href="http://akka.io/community">Community Projects</a></li>
+            <li><a href="http://github.com/akka/akka">Source Code</a></li>
+            <li><a href="http://groups.google.com/group/akka-user">Mailing List</a></li>
+            <li><a href="http://doc.akka.io/docs/akka/current/project/issue-tracking.html">Report a Bug</a></li>
+        </ul>
+        <ul>
+            <li><h5>Company</h5></li>
+            <li><a href="http://typesafe.com/products/typesafe-subscription">Commercial Support</a></li>
+            <li><a href="http://akka.io/team">Team</a></li>
+            <li><a href="mailto:info@typesafe.com">Contact</a></li>
+        </ul>
+        <ul>
+            <li><img src="../assets/akka_icon_reverse.svg" align="center"/></li>
+        </ul>
+    </div>
+    <div class="container copyright">
+        <p style="float: left;">
+            © 2013 <a href="http://typesafe.com/">Typesafe Inc.</a> <span class="license">Akka is Open Source and available under the Apache 2 License.</span>
+        </p>
+
+        <p style="float: right; font-size: 12px;">
+            Last updated: Oct 24, 2014
+        </p>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#toc').toc();
+</script>
+
+
+</body>
+</html>

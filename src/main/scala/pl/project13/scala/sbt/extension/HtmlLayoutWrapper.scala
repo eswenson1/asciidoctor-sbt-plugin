@@ -7,10 +7,23 @@ import java.util.concurrent.atomic.AtomicReference
 import org.asciidoctor.ast.Document
 import org.asciidoctor.extension.Postprocessor
 
-class HtmlLayoutWrapper(opts: java.util.HashMap[String, AnyRef]) extends Postprocessor(opts) {
+/**
+ * Vars:
+ *
+ * {{{
+ *   html-layout.file
+ *   html-layout.body-marker
+ *   html-layout.head-title-marker
+ *   html-layout.title-marker
+ *
+ *   html-layout.vars.*
+ * }}}
+ */
+class HtmlLayoutWrapper(opts: java.util.Map[String, AnyRef]) extends Postprocessor(opts) {
 
   private val filename = Option(opts.get("html-layout.file")).getOrElse("src/adoc/layout.html").toString
   private val bodyMarker = Option(opts.get("html-layout.body-marker")).getOrElse("""{{body}}""").toString
+  private val headTitleMarker = Option(opts.get("html-layout.head-title-marker")).getOrElse("""{{head.title}}""").toString
   private val titleMarker = Option(opts.get("html-layout.title-marker")).getOrElse("""{{title}}""").toString
 
   def assetsRelPath(opts: util.Map[AnyRef, AnyRef]): String = Option(opts.get("assets-rel-path")).map(_.toString).getOrElse("assets/")
@@ -44,10 +57,17 @@ class HtmlLayoutWrapper(opts: java.util.HashMap[String, AnyRef]) extends Postpro
   override def process(document: Document, input: String): String = if (document.basebackend("html")) {
     val docTitle = Option(document.doctitle()).getOrElse("")
 
-    template
+    val phase2 = template
       .replaceAll("""assets/""", assetsRelPath(document.getOptions)) // this is a hack, because Processors are unaware which file they work on
       .replace(bodyMarker, input)
-      .replaceAll(titleMarker, s"$docTitle$titleSuffix")
+      .replace(headTitleMarker, s"$docTitle$titleSuffix")
+      .replace(titleMarker, docTitle)
+
+    // replace user provided variables
+    val userVars = Option(opts.get("html-layout.vars")).map(_.asInstanceOf[List[(String, String)]]).getOrElse(Nil)
+    userVars.foldLeft(phase2) {
+      case (acc, (k, v)) => phase2.replace(k, v)
+    }
   } else input
 
 }

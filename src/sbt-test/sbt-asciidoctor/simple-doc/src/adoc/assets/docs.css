@@ -54,7 +54,7 @@ strong {color: #0B5567; }
 	line-height: 36px;
 }
 
-.admonition {
+.admonitionblock {
   background-image: none;
   background-color: #fdf5d9;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
