@@ -1,7 +1,7 @@
 = Actors
 
 :sectanchors:
-:sourcedir: ../../test/scala/akka/actor
+:sourcedir: ../../test/scala
 :scaladoc-import_0: akka.actor._
 
 = Actors
@@ -39,7 +39,7 @@ along with the implementation of how the messages should be processed.
 Here is an example:
 
 [source]
-include::{sourcedir}/actor/ActorDocSpec.scala[tags=my-actor]
+include::{sourcedir}/akka/actor/ActorDocSpec.scala[tags=my-actor]
 
 [source]
 ----

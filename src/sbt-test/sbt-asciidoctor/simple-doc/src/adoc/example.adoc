@@ -3,7 +3,7 @@
 :idseparator: -
 :sectanchors:
 :sectlinks:
-:source-highlighter: pygments
+//:source-highlighter: pygments
 :experimental:
 :mdash: &#8212;
 :language: asciidoc
