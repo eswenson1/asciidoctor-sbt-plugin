@@ -1,8 +1,5 @@
 package pl.project13.scala.sbt
 
-import java.io.BufferedReader
-import java.io.FileReader
-import java.io.FileWriter
 import java.util
 
 import com.github.sommeri.less4j.utils.URIUtils
@@ -76,7 +73,6 @@ object SbtAsciidoctor extends AutoPlugin {
     },
 
     extensions in AsciiDoctor := List(
-      classOf[extension.HtmlLayoutWrapper],
       "class" -> classOf[extension.ScaladocInlineMacro]
     ),
 
@@ -156,15 +152,15 @@ object SbtAsciidoctor extends AutoPlugin {
     // NOTE Asciidoctor will set the baseDir to the directory of the input file when using convertFile
     engine.convertFile(adocFile, options)
     outFile
-    //val reader = new BufferedReader(new FileReader(adocFile))
-    //val writer = new FileWriter(outFile)
-    //try {
-    //  engine.convert(reader, writer, options)
-    //  outFile
-    //} finally {
-    //  reader.close()
-    //  writer.close()
-    //}
+//    val reader = new BufferedReader(new FileReader(adocFile))
+//    val writer = new FileWriter(outFile)
+//    try {
+//      engine.convert(reader, writer, options)
+//      outFile
+//    } finally {
+//      reader.close()
+//      writer.close()
+//    }
   }
 
   override lazy val projectSettings = inConfig(Compile)(asciidoctorSettings)
