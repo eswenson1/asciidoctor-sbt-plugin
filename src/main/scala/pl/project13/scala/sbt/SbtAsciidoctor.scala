@@ -67,6 +67,7 @@ object SbtAsciidoctor extends AutoPlugin {
     options in AsciiDoctor := {
       import org.asciidoctor.Options._
       Map(
+        "safe" -> org.asciidoctor.SafeMode.UNSAFE,
         "assetsdir" -> (assetsDir in AsciiDoctor).value,
         "stylesdir" -> (stylesDir in AsciiDoctor).value,
         "stylesheet" -> (stylesheet in AsciiDoctor).value,
@@ -152,15 +153,18 @@ object SbtAsciidoctor extends AutoPlugin {
   }
 
   private def writeToFile(options: util.HashMap[String, AnyRef], adocFile: File, outFile: File): File = {
-    val reader = new BufferedReader(new FileReader(adocFile))
-    val writer = new FileWriter(outFile)
-    try {
-      engine.convert(reader, writer, options)
-      outFile
-    } finally {
-      reader.close()
-      writer.close()
-    }
+    // NOTE Asciidoctor will set the baseDir to the directory of the input file when using convertFile
+    engine.convertFile(adocFile, options)
+    outFile
+    //val reader = new BufferedReader(new FileReader(adocFile))
+    //val writer = new FileWriter(outFile)
+    //try {
+    //  engine.convert(reader, writer, options)
+    //  outFile
+    //} finally {
+    //  reader.close()
+    //  writer.close()
+    //}
   }
 
   override lazy val projectSettings = inConfig(Compile)(asciidoctorSettings)
