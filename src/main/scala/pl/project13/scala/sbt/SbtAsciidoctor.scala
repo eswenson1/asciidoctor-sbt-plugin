@@ -48,7 +48,15 @@ object SbtAsciidoctor extends AutoPlugin {
   }
   import pl.project13.scala.sbt.SbtAsciidoctor.autoImport._
 
-  private lazy val engine = org.asciidoctor.Asciidoctor.Factory.create(getClass.getClassLoader)
+  private lazy val engine = {
+    val oldTccl = Thread.currentThread().getContextClassLoader()
+    try {
+      Thread.currentThread().setContextClassLoader(getClass().getClassLoader())
+      org.asciidoctor.Asciidoctor.Factory.create()
+    } finally {
+      Thread.currentThread().setContextClassLoader(oldTccl)
+    }
+  }
 
 
   lazy val asciidoctorSettings = Seq(
